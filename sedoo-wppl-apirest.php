@@ -13,7 +13,7 @@
  * @package         sedoo-wppl-apirest
  */
 
-
+ 
 /**
  * Docs : https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#creating-endpoints 
  */
