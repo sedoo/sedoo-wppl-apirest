@@ -18,6 +18,7 @@
  * Docs : https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#creating-endpoints 
  */
 
+
 /**
  * Get the list of public sites
  * @return array The list of public sites
@@ -45,6 +46,15 @@ function sedoo_wppl_restapi_get_sites() {
 /////
 function sedoo_wppl_restapi_get_all_sites() {
     $sites_list = get_sites();
+    foreach($sites_list as $site) {
+        switch_to_blog( $site->blog_id );
+            $theme_data = wp_get_theme();
+            $theme_info = ['theme_name' => $theme_data->get( 'Name' ), 'theme_version' => $theme_data->get( 'Version' )];  
+            $site->current_theme = $theme_info;
+            $site->site_name = get_bloginfo('name');
+
+        restore_current_blog();
+    }
     // rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
     return rest_ensure_response($sites_list);
 }
