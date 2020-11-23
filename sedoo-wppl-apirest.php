@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.1
+ * Version:         0.1.2
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
@@ -77,12 +77,34 @@ function sedoo_wppl_restapi_get_one_site($data) {
     restore_current_blog();
 
     return rest_ensure_response($one_site);
+} 
+
+
+/////
+// GET FEED SUMMARY
+// network/site/ID
+/////
+function sedoo_wppl_restapi_get_feed_summary() {
+    $one_feed_summary->numbers_of_websites = count(get_sites());
+    $one_feed_summary->numbers_of_users = count(get_users());
+    $active_plugins_list = get_option('active_plugins');
+    $one_feed_summary->active_plugins = count($active_plugins_list);
+
+    return rest_ensure_response($one_feed_summary);
 }
 
 
 function sedoo_wppl_restapi_register_routes() {
     // register_rest_route() handles more arguments but we are going to stick to the basics for now.
     //http://localhost/wordpress_directory/wp-json/network/sites/list
+
+    register_rest_route( 'network/','/summary', array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::READABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => 'sedoo_wppl_restapi_get_feed_summary',
+    ) );
+
 
     register_rest_route( 'network/sites','/all', array(
         // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
