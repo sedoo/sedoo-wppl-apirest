@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.5
+ * Version:         0.1.6
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
@@ -124,10 +124,17 @@ function sedoo_wppl_restapi_get_one_site($data) {
 // network/site/ID
 /////
 function sedoo_wppl_restapi_get_feed_summary() {
+    foreach(get_sites() as $site) {
+        switch_to_blog( $site->blog_id );
+        $one_feed_summary->site_name[] = get_bloginfo('name');
+        restore_current_blog();
+    }
     $one_feed_summary->numbers_of_websites = count(get_sites());
     $one_feed_summary->numbers_of_users = count(get_users());
     $active_plugins_list = get_option('active_plugins');
     $one_feed_summary->active_plugins = count($active_plugins_list);
+
+
 
     return rest_ensure_response($one_feed_summary);
 }
