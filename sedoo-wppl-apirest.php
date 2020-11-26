@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.7
+ * Version:         0.1.7.1
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
@@ -61,6 +61,7 @@ function sedoo_wppl_restapi_get_all_sites() {
     }
     $sites_list['config']->phpversion = phpversion();
     $sites_list['config']->apacheversion = apache_get_version();
+    $sites_list['config']->networkurl = network_admin_url();
     $sites_list['config']->freespace = round(disk_free_space('/') /1024/1024/1024); // retourne en octet donc je onvertis en Gb
 
 
