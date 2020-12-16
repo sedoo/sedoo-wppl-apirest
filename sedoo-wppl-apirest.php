@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.7.2
+ * Version:         0.1.7.3
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
