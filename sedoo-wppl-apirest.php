@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.7.3
+ * Version:         0.1.8
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
@@ -18,6 +18,8 @@
  * Docs : https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#creating-endpoints 
  */
 
+
+ /* Used to get domain mapped url in /urllist endpoint */
 function get_domain_mapped_url( $custom_blog_id ) {
 
     // Enable WordPress DB connection
@@ -127,8 +129,6 @@ function sedoo_wppl_restapi_get_all_sites_url() {
     $sites_list['sites'] = get_sites();
     foreach($sites_list['sites'] as $site) {
         switch_to_blog( $site->blog_id );
-            $site->site_url_2 = get_site_url();
-            $site->site_url_3 = get_site_url();
             $site->site_url = get_domain_mapped_url($site->blog_id);
         restore_current_blog();
     }
