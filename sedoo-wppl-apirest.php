@@ -7,7 +7,7 @@
  * Author URI:      https://www.sedoo.fr 
  * Text Domain:     sedoo-wppl-apirest
  * Domain Path:     /languages
- * Version:         0.1.7.1
+ * Version:         0.1.7.2
  * GitHub Plugin URI: sedoo/sedoo-wppl-apirest
  * GitHub Branch:     master
  * @package         sedoo-wppl-apirest
@@ -69,6 +69,23 @@ function sedoo_wppl_restapi_get_all_sites() {
     return rest_ensure_response($sites_list);
 }
 
+
+/////
+// GET ALL SITES LIST  OF A FEED
+// network/sites/all
+/////
+function sedoo_wppl_restapi_get_all_sites_url() {
+    $sites_list['sites'] = get_sites();
+    foreach($sites_list['sites'] as $site) {
+        switch_to_blog( $site->blog_id );
+            $site->site_url = get_site_url();
+        restore_current_blog();
+    }
+
+    // rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
+    return rest_ensure_response($sites_list);
+}
+
 /////
 // GET ONE SITE DETAILS  
 // network/site/ID
@@ -113,6 +130,13 @@ function sedoo_wppl_restapi_register_routes() {
         'methods'  => WP_REST_Server::READABLE,
         // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
         'callback' => 'sedoo_wppl_restapi_get_feed_summary',
+    ) );
+
+    register_rest_route( 'network/','/urllist', array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::READABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => 'sedoo_wppl_restapi_get_all_sites_url',
     ) );
 
 
